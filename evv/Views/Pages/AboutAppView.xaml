@@ -1,0 +1,90 @@
+﻿<UserControl
+    x:Class="Evva.Views.Pages.AboutAppView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Converters="clr-namespace:Evva.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:local="clr-namespace:Evva.Views.Pages"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Converters:FontConverter x:Key="FontConverter" />
+
+        <Style x:Key="TextBlocksResults" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="{Binding Path=ActualWidth, Mode=OneWay, Converter={StaticResource FontConverter}, ConverterParameter=35.89, RelativeSource={RelativeSource FindAncestor, AncestorType=Grid}}" />
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+
+
+        <Border
+            Grid.Row="0"
+             CornerRadius="130 0 130 0"
+            Margin="10,10,10,10"
+                        Background="#FCF38A" RenderTransformOrigin="0.5,0.5">
+            <Border.LayoutTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Border.LayoutTransform>
+            <Border.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Border.RenderTransform>
+
+            <TextBlock   Grid.Column="0" TextWrapping="Wrap" FontFamily="Samsung Sharp Sans" FontSize="16" Margin="35 40 30 00">
+                 <Run FontFamily="Samsung Sharp Sans"
+                            Text="Одно из назначений пищи – обеспечение организма энергией. Эта энергия расходуется на работу органов, физическую активность и другие потребности организма, а также откладывается в запас в виде жира." />
+            </TextBlock>
+
+        </Border>
+        <Border
+            Grid.Row="1"
+            Grid.Column="1"
+             CornerRadius="0 130 0 130"
+            Margin="10,10,10,10"
+                        Background="#FCF38A" RenderTransformOrigin="0.5,0.5">
+            <Border.LayoutTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Border.LayoutTransform>
+            <Border.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Border.RenderTransform>
+
+            <TextBlock   Grid.Column="0" TextWrapping="Wrap" FontFamily="Samsung Sharp Sans" FontSize="16" Margin="40 20 30 0">
+                 <Run FontFamily="Samsung Sharp Sans"
+                            Text="Одно из назначений пищи – обеспечение организма энергией. Эта энергия расходуется на работу органов, физическую активность и другие потребности организма, а также откладывается в запас в виде жира." />
+            </TextBlock>
+
+        </Border>
+    </Grid>
+</UserControl>

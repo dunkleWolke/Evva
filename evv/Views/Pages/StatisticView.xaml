@@ -1,0 +1,206 @@
+﻿<UserControl
+    x:Class="Evva.Views.Pages.StatisticView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Converters="clr-namespace:Evva.Converters"
+    xmlns:charts="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:local="clr-namespace:Evva.Views.Pages"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="StatisticWindow"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Converters:WidhtHeightConverter x:Key="MyWHConverter" />
+        <Converters:TwoPartConverter x:Key="MyTPConverter" />
+        <Converters:SizeConverter x:Key="MySizeConverter" />
+        <Converters:FontConverter x:Key="FontConverter" />
+
+        <Style x:Key="TextBlocksResults" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Samsung Sharp Sans" />
+            <Setter Property="FontSize" Value="{Binding Path=ActualWidth, Mode=TwoWay, Converter={StaticResource FontConverter}, ConverterParameter=86, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}" />
+        </Style>
+
+        <Style x:Key="TextBlocksResultsThick" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="SamsungOne 400" />
+            <Setter Property="FontSize" Value="{Binding Path=ActualWidth, Mode=TwoWay, Converter={StaticResource FontConverter}, ConverterParameter=44.50, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}" />
+
+        </Style>
+
+        <Style x:Key="SPStyle" TargetType="StackPanel">
+            <Setter Property="Width" Value="{Binding Path=ActualWidth, Mode=TwoWay, Converter={StaticResource MyWHConverter}, ConverterParameter=4, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}" />
+            <Setter Property="Height" Value="{Binding Path=ActualWidth, Mode=TwoWay, Converter={StaticResource MyWHConverter}, ConverterParameter=3, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}" />
+            <Setter Property="Margin" Value="0,0,0,0" />
+        </Style>
+
+
+        <Style x:Key="SPMarginStyle" TargetType="StackPanel">
+            <Setter Property="Margin" Value="5,0,5,0" />
+        </Style>
+
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="7*" />
+            <RowDefinition Height="3*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.ColumnSpan="2" Margin="10,10,10,10">
+            <charts:CartesianChart
+                Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
+                Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                LegendLocation="Right"
+                Series="{Binding SeriesCollection}">
+                <charts:CartesianChart.AxisY>
+                    <charts:Axis
+                        Title="Кг"
+                        Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                        LabelFormatter="{Binding YFormatter}" />
+                </charts:CartesianChart.AxisY>
+                <charts:CartesianChart.AxisX>
+                    <charts:Axis
+                        Title="Дата"
+                        Foreground="{DynamicResource MahApps.Brushes.ThemeForeground}"
+                        Labels="{Binding Labels}" />
+                </charts:CartesianChart.AxisX>
+            </charts:CartesianChart>
+        </Grid>
+
+
+
+        <ListBox
+            Grid.Row="2"
+            Grid.Column="0"
+            Margin="10,10,10,10"
+            ItemsSource="{Binding  StatisticCollection}"
+            SelectedItem="{Binding LastSelected}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock FontFamily="SamsungOne 400" Text="Дата:" />
+                            <TextBlock
+                                x:Name="Дата"
+                                FontFamily="Samsung Sharp Sans"
+                                Text="{Binding ParamsDate,StringFormat='dd.MM.yyyy hh:mm'}" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontFamily="SamsungOne 400" Text="Вес:" />
+                                <TextBlock
+                                    x:Name="Вес"
+                                    FontFamily="SamsungOne 400"
+                                    Text="{Binding UserWeight}" />
+                                <TextBlock FontFamily="SamsungOne 400" Text=" кг" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical">
+                                <Button Command="{Binding ElementName=StatisticWindow, Path=DataContext.DeleteWeightRowCommand}">
+                                    <Button.Content>
+                                        <iconPacks:PackIconRadixIcons Kind="Cross2" />
+                                    </Button.Content>
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+
+        <TextBlock
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+            Grid.Column=" 1"
+            Grid.Row="1"
+                FontSize="15" Margin="10,10,0,0"
+                ><Run>Ваш вес:</Run></TextBlock>
+        <mah:NumericUpDown
+                Grid.Column=" 1"
+                Grid.Row="1"
+                Foreground=" #FF9F0055"
+                Margin="100,0,94,90"
+                mah:NumericInputMode="Decimal"
+                mah:ParsingNumberStyle="Float"
+                mah:TextBoxHelper.ClearTextButton="True"
+                mah:TextBoxHelper.Watermark="Вес"
+                Maximum="300"
+                Minimum="10"
+                Value="{Binding Weight}" Height="35" />
+
+        <TextBlock
+              Grid.Column=" 1"
+            Grid.Row="1"
+               
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                FontSize="15" Margin="10,44,0,0"
+                ><Run Text="Ваш рост:" /></TextBlock>
+        <mah:NumericUpDown
+            Foreground=" #FF9F0055"
+                 Grid.Column=" 1"
+                Margin="100,30,94,45"
+                mah:NumericInputMode="Decimal"
+                mah:ParsingNumberStyle="Float"
+                mah:TextBoxHelper.ClearTextButton="True"
+                mah:TextBoxHelper.Watermark="Рост"
+                Maximum="300"
+                Minimum="50"
+                Value="{Binding Height}" Height="35" Grid.Row="1" />
+
+        <Button
+               Grid.Column=" 1"
+                Grid.Row="1"
+                Margin="36,75,94,0"
+                Command="{Binding AddParamsReportCommand}"
+                Content="Добавить новую запись" Height="40"  />
+
+        <!--<DataGrid
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="10,10,10,10"
+            AutoGenerateColumns="False"
+            CanUserAddRows="False"
+            FontFamily="Samsung Sharp Sans"
+            FontSize="12"
+            ItemsSource="{Binding StatisticCollection}"
+            SelectedItem="{Binding LastSelected}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding ParamsDate,StringFormat='dd.MM.yyyy hh:mm'}" FontFamily="SamsungOne 400">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="Дата"/>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding UserWeight}"  FontFamily="SamsungOne 400">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="Вес" />
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="Удаление" />
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Command="{Binding ElementName=StatisticWindow, Path=DataContext.DeleteWeightRowCommand}">
+                                <Button.Content>
+                                    <iconPacks:PackIconRadixIcons Kind="Cross2" />
+                                </Button.Content>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>-->
+
+
+
+    </Grid>
+</UserControl>
+
+

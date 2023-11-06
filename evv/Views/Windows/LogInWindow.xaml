@@ -1,0 +1,69 @@
+﻿<Window x:Class="Evva.Views.Windows.LogInWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:local="clr-namespace:Evva.Views.Windows"
+        mc:Ignorable="d"
+        Title="LogInWindow" Height="450" Width="800">
+
+    <Grid >
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0.1,0" EndPoint="0.9,1">
+                <GradientStop Color="#df73ff" Offset="1" />
+                <GradientStop Color="#971AFF" Offset="0" />
+            </LinearGradientBrush>
+        </Grid.Background>
+
+
+
+
+        <Border Height="434" VerticalAlignment="Center" CornerRadius="180 0 180 0" Background="#FF212019"  Margin="286,0,0,0">
+
+            <ContentControl
+            x:Name="LogInRegisterCC"
+           
+            Margin="10,140,10,0"
+            VerticalAlignment="Top"
+            Content="{Binding SelectedViewModel}" />
+        </Border>
+        <Grid HorizontalAlignment="Left" Height="434" VerticalAlignment="Center" Width="281">
+
+            <TextBlock Text="Evva"
+                               Foreground="White"
+                               FontSize="25"
+                               FontWeight="Medium"
+                               FontFamily="Montserrat"
+                               HorizontalAlignment="Left" Margin="104,111,0,293"/>
+
+            <TextBlock
+            DataContext="{Binding SelectedViewModel}"
+            Margin="0,204,0,160"
+            FontFamily="Samsung Sharp Sans"
+            FontSize="14"
+            Foreground="White"
+            Text="{Binding Message}"
+            TextAlignment="Center"
+            TextWrapping="Wrap">
+                <TextBlock.Effect>
+                    <DropShadowEffect
+                    BlurRadius="1"
+                    Opacity="0.25"
+                    ShadowDepth="0.5" />
+                </TextBlock.Effect>
+            </TextBlock>
+
+            <TextBlock Text="It is now more convenient and easier to monitor your health"
+                               Foreground="LightGray"
+                               FontSize="12"
+                               FontWeight="Medium"
+                               FontFamily="Montserrat"
+                               TextWrapping="Wrap"
+                               TextAlignment="Center" Margin="0,390,0,10"/>
+
+            <Image Source="N:\Sharp\Shop\Shop\Images\logo.png" Width="100" Height="100" Margin="31,41,150,293"/>
+        </Grid>
+
+    </Grid>
+</Window>

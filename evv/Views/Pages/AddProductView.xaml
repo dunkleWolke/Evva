@@ -1,0 +1,422 @@
+﻿<UserControl
+    x:Class="Evva.Views.Pages.AddProductView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Converters="clr-namespace:Evva.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:local="clr-namespace:Evva.Views.Pages"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="clr-namespace:Evva.Models"
+    x:Name="UC"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d" >
+    <UserControl.Resources>
+        <Converters:FontConverter x:Key="FontConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="400*" />
+            <ColumnDefinition Width="161*" />
+            <ColumnDefinition Width="239*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="142*" />
+            <RowDefinition Height="223*" />
+            <RowDefinition Height="88*" />
+
+        </Grid.RowDefinitions>
+
+
+
+        <TextBox
+                            x:Name="SearchTB"
+
+                            mah:TextBoxHelper.ClearTextButton="True"
+                            mah:TextBoxHelper.Watermark="Название продукта"
+                            FontFamily="SamsungOne 400"
+                            Text="{Binding SearchText}" Margin="5,5,220,90" Width="150" Height="20" Padding="0,0,0,0" />
+        <Button  Command="{Binding SearchCommand}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="168,8,0,0" Height="30" Width="30" Padding="0,0,0,0" Grid.ColumnSpan="1">
+            <Button.Content>
+                <iconPacks:BootstrapIcons Kind="Search"  />
+            </Button.Content>
+        </Button>
+
+        <Button
+                  
+                    Margin="10,85,0,10"
+                    Command="{Binding ShowUserProductsCommand}"
+                    Content="Ваши продукты"
+                    FontFamily="Samsung Sharp Sans" Width="120" Height="30" Padding="0,0,0,0" HorizontalAlignment="Left" />
+        <Button
+                    
+                    Margin="10,85,0,10"
+                    Command="{Binding ShowAllProductsCommand}"
+                    Content="Все продукты"
+                    FontFamily="Samsung Sharp Sans" Width="120" Height="30" Padding="0,0,0,0" />
+        <mah:NumericUpDown
+                  
+                    Margin="237,42,18,63"
+                    mah:NumericInputMode="Decimal"
+                    mah:ParsingNumberStyle="Float"
+                    mah:TextBoxHelper.Watermark="Грамм"
+                    FontFamily="SamsungOne 400"
+                    Maximum="1000"
+                    Minimum="1"
+                    Value="{Binding GramValue}" Height="20" Width="120" Padding="0,0,0,0" />
+        <ComboBox
+                    Margin="237,10,18,95"
+                    FontFamily="SamsungOne 400"
+                    Text="{Binding SelectedPeriod}" Width="120" Height="20" Padding="0,0,0,0">
+            <ComboBoxItem Content="Завтрак" IsSelected="True" />
+            <ComboBoxItem Content="Ланч" />
+            <ComboBoxItem Content="Обед" />
+            <ComboBoxItem Content="Полдник" />
+            <ComboBoxItem Content="Ужин" />
+        </ComboBox>
+
+        <StackPanel
+                   
+                    HorizontalAlignment="Left"
+                    Orientation="Horizontal" Width="162" Height="40" Margin="10,38,0,63">
+            <Button
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        Command="{Binding RemoveDayCommand}"
+                        Content="❮"
+                        FontSize="{Binding ActualHeight, ElementName=UC, Mode=OneWay, Converter={StaticResource FontConverter}, ConverterParameter=30}" Height="10" Width="20" Padding="0,0,0,0" />
+            <DatePicker
+                        x:Name="DateTBResults"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontFamily="Samsung Sharp Sans"
+                        FontSize="{Binding ActualHeight, ElementName=UC, Mode=OneWay, Converter={StaticResource FontConverter}, ConverterParameter=29}"
+                        FontWeight="Normal"
+                        SelectedDate="{Binding DateToChoose, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="20" Padding="0,0,0,0" Width="120" />
+            <Button
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        Command="{Binding AddDayCommand}"
+              
+                        Content="❯"
+                        FontSize="{Binding ActualHeight, ConverterParameter=30, Converter={StaticResource FontConverter}, ElementName=UC, Mode=OneWay}" Height="10" Padding="0,0,0,0" Width="20" />
+
+        </StackPanel>
+        <DockPanel Width="120" Height="40" Margin="240,75,5,10"  >
+
+            <CheckBox Margin="10" IsChecked="{Binding FoodCategoryCheck}" RenderTransformOrigin="0.5,0.5">
+                <CheckBox.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-0.347"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </CheckBox.RenderTransform>
+            </CheckBox>
+            <ComboBox                   
+                    FontFamily="SamsungOne 400" IsEnabled="{Binding FoodCategoryCheck}"
+                    Text="{Binding SelectedCategory}" ItemsSource="{Binding FoodCategories}"  SelectedIndex="1" DockPanel.Dock="Top" Height="26"/>
+        </DockPanel>
+
+
+
+
+        <ListBox
+            Grid.Row="1"
+            Grid.Column="0"
+            Margin="10,10,5,5"
+            ItemsSource="{Binding CollectionOfProducts}"
+            SelectedItem="{Binding SelectedProduct}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock
+                                x:Name="ProductName"
+                                FontFamily="Samsung Sharp Sans"
+                                Text="{Binding ProductName}" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontFamily="SamsungOne 400" Text="Калории:" />
+                                <TextBlock
+                                    x:Name="Calories"
+                                    FontFamily="SamsungOne 400"
+                                    Text="{Binding CaloriesGram}" />
+                                <TextBlock FontFamily="SamsungOne 400" Text=" ккал" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontFamily="SamsungOne 400" Text="Белки:" />
+                                <TextBlock
+                                    x:Name="Proteins"
+                                    FontFamily="SamsungOne 400"
+                                    Text="{Binding ProteinsGram}" />
+                                <TextBlock FontFamily="SamsungOne 400" Text=" г" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontFamily="SamsungOne 400" Text="Жиры:" />
+                                <TextBlock
+                                    x:Name="Fats"
+                                    FontFamily="SamsungOne 400"
+                                    Text="{Binding FatsGram}" />
+                                <TextBlock FontFamily="SamsungOne 400" Text=" г" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontFamily="SamsungOne 400" Text="Углеводы:" />
+                                <TextBlock
+                                    x:Name="Carbohydrates"
+                                    FontFamily="SamsungOne 400"
+                                    Text="{Binding CarbohydratesGram}" />
+                                <TextBlock FontFamily="SamsungOne 400" Text=" г" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontFamily="SamsungOne 400" Text="Категория: " />
+                                <TextBlock
+                                    x:Name="Category"
+                                    FontFamily="SamsungOne 400"
+                                    Text="{Binding FoodCategory}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <TextBlock
+                Grid.Column="1"
+                FontSize="12" Height="15" Width="136" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="15,3,0,0"
+                ><Run Text="Название продукта:" /></TextBlock>
+        <TextBox
+                Grid.Column="2"
+                Margin="0,5,0,105"
+                Text="{Binding ProductName}" IsEnabled="{Binding NameTBEnabled}" MinHeight="20" Padding="0,0,0,0" Width="215" Height="20"/>
+
+        <TextBlock
+               Grid.Column="1"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                FontSize="12" Height="15" Width="158" Margin="15,24,0,0" Grid.ColumnSpan="2"
+                ><Run Language="ru-ru" Text="Калорий на 100 грамм:" /></TextBlock>
+        <mah:NumericUpDown
+               
+                Grid.Column="2"
+                Margin="0,10,0,67"
+                mah:NumericInputMode="Numbers"
+                mah:ParsingNumberStyle="Integer"
+                mah:TextBoxHelper.ClearTextButton="True"
+                mah:TextBoxHelper.Watermark="Ккал"
+                Maximum="1000"
+                Minimum="1"
+                Value="{Binding Calories}" Height="20" Width="215" MinHeight="20" Padding="0,0,0,0" />
+
+        <TextBlock
+                Grid.Column="1"
+               HorizontalAlignment="Left" VerticalAlignment="Top"
+                FontSize="12" Height="15" Width="148" Margin="13,45,0,0"
+               ><Run Language="ru-ru" Text="Белков на 100 грамм:" /></TextBlock>
+        <mah:NumericUpDown
+               
+                Grid.Column="2"
+                Margin="0,30,0,45"
+                mah:NumericInputMode="Decimal"
+                mah:ParsingNumberStyle="Float"
+                mah:TextBoxHelper.ClearTextButton="True"
+                mah:TextBoxHelper.Watermark="Грамм"
+                Maximum="100"
+                Minimum="1"
+                Value="{Binding Proteins}" Width="215" Height="20" MinHeight="20" Padding="0,0,0,0" />
+
+        <TextBlock
+                Grid.Column="1"
+               HorizontalAlignment="Left" VerticalAlignment="Top"
+                FontSize="12" Height="15" Width="154" Margin="14,66,0,0" Grid.ColumnSpan="2"
+                ><Run Text="Углеводов на 100 грамм:" /></TextBlock>
+        <mah:NumericUpDown
+                
+                Grid.Column="2"
+                Margin="0,54,0,28"
+                mah:NumericInputMode="Decimal"
+                mah:ParsingNumberStyle="Float"
+                mah:TextBoxHelper.ClearTextButton="True"
+                mah:TextBoxHelper.Watermark="Грамм"
+                Maximum="100"
+                Minimum="1"
+                Value="{Binding Carbohydrates}" Height="20" Width="215" MinHeight="20" Padding="0,0,0,0"  />
+
+        <TextBlock
+                Grid.Column="1"
+                HorizontalAlignment="Left" VerticalAlignment="Top"
+                FontSize="12" Height="15" Width="146" Margin="15,87,0,0"
+                ><Run Text="Жиров на 100 грамм:" /></TextBlock>
+        <mah:NumericUpDown
+                Grid.Column="2"
+                mah:NumericInputMode="Decimal"
+                mah:ParsingNumberStyle="Float"
+                mah:TextBoxHelper.ClearTextButton="True"
+                mah:TextBoxHelper.Watermark="Грамм"
+                Maximum="100"
+                Minimum="1"
+                Value="{Binding Fats}" Width="215" Height="20" MinHeight="20" Margin="0,80,0,12" Padding="0,0,0,0" />
+
+        <TextBlock
+                Grid.Column="1"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                FontSize="12" Height="15" Width="74" Margin="15,108,0,0"
+                ><Run Language="ru-ru" Text="Категория:" /></TextBlock>
+        <ComboBox
+                
+                Grid.Column="2"
+                Margin="0,103,0,200"
+                ItemsSource="{Binding CategoryCollection}"
+                Text="{Binding SelectedCategory}" Height="20" MinHeight="20" Padding="0,0,0,0" Width="215" Grid.RowSpan="2" />
+
+
+        <!--<DataGrid
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="10,5,5,5"
+                AutoGenerateColumns="False"
+                CanUserAddRows="False"
+                FontFamily="Samsung Sharp Sans"
+                FontSize="12"
+                IsReadOnly="True"
+                ItemsSource="{Binding ProductsCollection}"
+                SelectedItem="{Binding LastSelected}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding ProductName}" FontFamily="SamsungOne 400">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="Продукт" />
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding CaloriesGram}" FontFamily="SamsungOne 400">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="Калории" />
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding ProteinsGram}" FontFamily="SamsungOne 400">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="Белки" />
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding CarbohydratesGram}" FontFamily="SamsungOne 400">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="Углеводы" />
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding FatsGram}" FontFamily="SamsungOne 400">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="Жиры" />
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="Удаление" />
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Command="{Binding ElementName=ParamsViewP, Path=DataContext.DeleteProductRowCommand}">
+                                <Button.Content>
+                                    <iconPacks:PackIconRadixIcons Kind="Cross2" />
+                                </Button.Content>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>-->
+
+        <ListBox
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="2,10,10,5"
+            ItemsSource="{Binding ProductsCollection}"
+             SelectedItem="{Binding LastSelected}" Grid.ColumnSpan="2">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock
+                                x:Name="ProductName"
+                                FontFamily="Samsung Sharp Sans"
+                                Text="{Binding ProductName}" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontFamily="SamsungOne 400" Text="Калории:" />
+                                <TextBlock
+                                    x:Name="Calories"
+                                    FontFamily="SamsungOne 400"
+                                    Text="{Binding CaloriesGram}" />
+                                <TextBlock FontFamily="SamsungOne 400" Text=" ккал" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontFamily="SamsungOne 400" Text="Белки:" />
+                                <TextBlock
+                                    x:Name="Proteins"
+                                    FontFamily="SamsungOne 400"
+                                    Text="{Binding ProteinsGram}" />
+                                <TextBlock FontFamily="SamsungOne 400" Text=" г" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontFamily="SamsungOne 400" Text="Жиры:" />
+                                <TextBlock
+                                    x:Name="Fats"
+                                    FontFamily="SamsungOne 400"
+                                    Text="{Binding FatsGram}" />
+                                <TextBlock FontFamily="SamsungOne 400" Text=" г" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontFamily="SamsungOne 400" Text="Углеводы:" />
+                                <TextBlock
+                                    x:Name="Carbohydrates"
+                                    FontFamily="SamsungOne 400"
+                                    Text="{Binding CarbohydratesGram}" />
+                                <TextBlock FontFamily="SamsungOne 400" Text=" г" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontFamily="SamsungOne 400" Text="Категория: " />
+                                <TextBlock
+                                    x:Name="Category"
+                                    FontFamily="SamsungOne 400"
+                                    Text="{Binding FoodCategory}" />
+                            </StackPanel>
+                            <StackPanel>
+                                <Button Command="{Binding ElementName=UC, Path=DataContext.DeleteProductRowCommand}">
+                                    <Button.Content>
+                                        <iconPacks:PackIconRadixIcons Kind="Cross2" />
+                                    </Button.Content>
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button
+                Grid.Row="2"
+                Grid.Column="1"
+                Margin="10,5,0,48"
+                Command="{Binding EditProductCommand}"
+                Content="Сохранить изменения" />
+        <Button
+                Grid.Row="2"
+                Grid.Column="2"
+                Margin="15,5,10,48"
+                Command="{Binding ClearProductCommand}"
+                Content="Очистить поля" />
+        <Button
+                Grid.Row="2"
+                Grid.Column="1"
+                Margin="10,38,10,10"
+                Command="{Binding AddProductToCollectionCommand}"
+                Content="Добавить новый продукт" Grid.ColumnSpan="2" />
+        <Button
+            Grid.Row="2"
+            Grid.Column="0"
+            Margin="100,19,100,29"
+            Command="{Binding AddProductCommand}"
+            Content="Добавить" />
+    </Grid>
+</UserControl>

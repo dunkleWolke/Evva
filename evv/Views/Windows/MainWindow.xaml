@@ -1,0 +1,102 @@
+﻿<mah:MetroWindow
+    x:Class="Evva.Views.Windows.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Evva"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:navigation="clr-namespace:Evva.Navigation"
+    xmlns:viewModels="clr-namespace:Evva.ViewModels"
+    x:Name="MainAppWindow"
+    Title="Evva"
+    Width="800"
+    Height="450"
+    GlowBrush="#FFEC5E"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+   
+    <controls:MetroWindow.DataContext>
+        <viewModels:ShellViewModel />
+    </controls:MetroWindow.DataContext>
+
+    <controls:MetroWindow.Resources>
+        <DataTemplate x:Key="MenuItemTemplate">
+            <Grid Height="40">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:HamburgerMenu}}, Path=CompactPaneLength, Mode=OneWay}" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <ContentControl
+                    Grid.Column="0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="{Binding Icon}"
+                    Focusable="False" />
+                <TextBlock
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    FontSize="16"
+                    Text="{Binding Label}" />
+            </Grid>
+        </DataTemplate>
+
+        <Storyboard x:Key="NavigationStoryboard">
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0" />
+                <SplineDoubleKeyFrame KeyTime="00:00:00.150" Value="1" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)">
+                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="200" />
+                <SplineDoubleKeyFrame
+                    KeySpline="0.1,0.9, 0.2, 1"
+                    KeyTime="00:00:00.300"
+                    Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Style BasedOn="{StaticResource {x:Type Frame}}" TargetType="{x:Type Frame}">
+            <Setter Property="navigation:FrameAnimator.FrameNavigationStoryboard" Value="{StaticResource NavigationStoryboard}" />
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <TranslateTransform />
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Accent4}" />
+            <Setter Property="ClipToBounds" Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Frame}">
+                        <Border
+                            Padding="{TemplateBinding Padding}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter x:Name="PART_FrameCP">
+                                <ContentPresenter.RenderTransform>
+                                    <TranslateTransform />
+                                </ContentPresenter.RenderTransform>
+                            </ContentPresenter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </controls:MetroWindow.Resources>
+
+
+    <Grid>
+        <controls:HamburgerMenu
+            x:Name="HamburgerMenuControl"
+            DisplayMode="CompactOverlay"
+            IsPaneOpen="False"
+            ItemInvoked="HamburgerMenuControl_OnItemInvoked"
+            ItemTemplate="{StaticResource MenuItemTemplate}"
+            ItemsSource="{Binding Menu}"
+            OptionsItemTemplate="{StaticResource MenuItemTemplate}"
+            OptionsItemsSource="{Binding OptionsMenu}" />
+
+    </Grid>
+</mah:MetroWindow>

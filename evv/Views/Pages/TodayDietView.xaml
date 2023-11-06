@@ -1,0 +1,275 @@
+﻿<UserControl
+    x:Class="Evva.Views.Pages.TodayDietView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Converters="clr-namespace:Evva.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:local="clr-namespace:Evva.Views.Pages"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:viewModels="clr-namespace:Evva.ViewModels"
+    x:Name="page"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Converters:WidhtHeightConverter x:Key="MyWHConverter" />
+        <Converters:FontConverter x:Key="FontConverter" />
+        <!--<Style x:Key="TileStyle" TargetType="mah:Tile">
+            <Setter Property="TitleFontSize" Value="{Binding ActualWidth, ElementName=tile, Mode=OneWay, Converter={StaticResource MyWHConverter}, ConverterParameter=11}" />
+            <Setter Property="Width" Value="{Binding ActualWidth, ElementName=stackPanel, Mode=OneWay}" />
+            <Setter Property="Height" Value="{Binding ActualHeight, ElementName=page, Mode=OneWay, Converter={StaticResource MyWHConverter}, ConverterParameter=5.55}" />
+        </Style>-->
+
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="171*" />
+
+        </Grid.ColumnDefinitions>
+
+        <StackPanel  Orientation="Horizontal"
+            x:Name="stackPanel"
+            Grid.Row="0"
+                     Grid.Column="0"
+            Margin="10,10,0,0"
+            VerticalAlignment="Center">
+            <StackPanel.Effect>
+                <DropShadowEffect
+                    BlurRadius="15"
+                    Opacity="0.15"
+                    ShadowDepth="0" />
+            </StackPanel.Effect>
+            <Button
+                Margin="50 0 30 0"
+                x:Name="tile"
+                Content="Завтрак"
+                Width="100"
+                Height="50"
+                Command="{Binding TableChangeToBreakfastCommand}"
+                Style="{StaticResource MahApps.Styles.Button}">
+                <!--<iconPacks:PackIconFeatherIcons
+                    Width="{Binding ActualWidth, ElementName=tile, Mode=OneWay, Converter={StaticResource MyWHConverter}, ConverterParameter=5}"
+                    Height="{Binding ActualWidth, ElementName=tile, Mode=OneWay, Converter={StaticResource MyWHConverter}, ConverterParameter=5}"
+                    Kind="Sunrise" />-->
+            </Button>
+            <Button
+                Margin="0 0 30 0"
+                Width="100"
+                Height="50"
+                Content="Ланч"
+                Command="{Binding TableChangeToLunchCommand}"
+                Style="{StaticResource MahApps.Styles.Button}">
+                <!--<iconPacks:PackIconFontAwesome
+                    Width="{Binding ActualWidth, ElementName=tile, Mode=OneWay, Converter={StaticResource MyWHConverter}, ConverterParameter=5}"
+                    Height="{Binding ActualWidth, ElementName=tile, Mode=OneWay, Converter={StaticResource MyWHConverter}, ConverterParameter=5}"
+                    Kind="MugHotSolid" />-->
+            </Button>
+            <Button
+                Margin="0 0 30 0"
+                Content="Обед"
+                Width="100"
+                Height="50"
+                Command="{Binding TableChangeToDinnerCommand}"
+                Style="{StaticResource MahApps.Styles.Button}">
+                <!--<iconPacks:PackIconFeatherIcons
+                    Width="{Binding ActualWidth, ElementName=tile, Mode=OneWay, Converter={StaticResource MyWHConverter}, ConverterParameter=5}"
+                    Height="{Binding ActualWidth, ElementName=tile, Mode=OneWay, Converter={StaticResource MyWHConverter}, ConverterParameter=5}"
+                    Kind="Sun" />-->
+            </Button>
+            <Button
+                Margin="0 0 30 0"
+                Content="Полдник"
+                Width="100"
+                Height="50"
+                Command="{Binding TableChangeToSnackCommand}"
+                Style="{StaticResource MahApps.Styles.Button}">
+                <!--<iconPacks:PackIconFeatherIcons
+                    Width="{Binding ActualWidth, ElementName=tile, Mode=OneWay, Converter={StaticResource MyWHConverter}, ConverterParameter=5}"
+                    Height="{Binding ActualWidth, ElementName=tile, Mode=OneWay, Converter={StaticResource MyWHConverter}, ConverterParameter=5}"
+                    Kind="Sunset" />-->
+            </Button>
+            <StackPanel />
+            <Button
+                Margin="0 0 30 0"
+                Content="Ужин"
+                Width="100"
+                Height="50"
+                Command="{Binding TableChangeToSupperCommand}"
+                Style="{StaticResource MahApps.Styles.Button}">
+                <!--<iconPacks:PackIconMaterial
+                    Width="{Binding ActualWidth, ElementName=tile, Mode=OneWay, Converter={StaticResource MyWHConverter}, ConverterParameter=5}"
+                    Height="{Binding ActualWidth, ElementName=tile, Mode=OneWay, Converter={StaticResource MyWHConverter}, ConverterParameter=5}"
+                    Kind="WeatherNight" />-->
+            </Button>
+
+        </StackPanel>
+        <ListBox
+            Grid.Row="1"
+            Grid.Column="0"
+            Margin="10,10,10,5"
+            ItemsSource="{Binding  TableToShow}"
+            SelectedItem="{Binding LastSelected, Mode=TwoWay}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock
+                                x:Name="ProductName"
+                                FontFamily="Samsung Sharp Sans"
+                                Text="{Binding Path=ProductName}" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontFamily="SamsungOne 400" Text="Калории:" />
+                                <TextBlock
+                                    x:Name="Calories"
+                                    FontFamily="SamsungOne 400"
+                                    Text="{Binding  DayCalories}" />
+                                <TextBlock FontFamily="SamsungOne 400" Text=" ккал" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontFamily="SamsungOne 400" Text="Белки:" />
+                                <TextBlock
+                                    x:Name="Proteins"
+                                    FontFamily="SamsungOne 400"
+                                    Text="{Binding DayProteins}" />
+                                <TextBlock FontFamily="SamsungOne 400" Text=" г" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontFamily="SamsungOne 400" Text="Жиры:" />
+                                <TextBlock
+                                    x:Name="Fats"
+                                    FontFamily="SamsungOne 400"
+                                    Text="{Binding DayFats}" />
+                                <TextBlock FontFamily="SamsungOne 400" Text=" г" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontFamily="SamsungOne 400" Text="Углеводы:" />
+                                <TextBlock
+                                    x:Name="Carbohydrates"
+                                    FontFamily="SamsungOne 400"
+                                    Text="{Binding DayCarbohydrates}" />
+                                <TextBlock FontFamily="SamsungOne 400" Text=" г" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical">
+                                <Button Command="{Binding ElementName=page, Path=DataContext.RemoveRowCommand}">
+                                    <Button.Content>
+                                        <iconPacks:PackIconRadixIcons Kind="Cross2" />
+                                    </Button.Content>
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <!--<DataGrid
+            Grid.Column="1"
+            Grid.Row="1"
+            Margin="10,10,10,18"
+            AutoGenerateColumns="False"
+            CanUserAddRows="False"
+            CanUserDeleteRows="False"
+            CanUserSortColumns="False"
+            IsReadOnly="True"
+            ItemsSource="{Binding TableToShow}"
+            SelectedItem="{Binding LastSelected, Mode=TwoWay}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=ProductName}">
+
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="Продукт" />
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding DayCalories}">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="Калории" />
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding DayProteins}">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="Белки" />
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding DayFats}">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="Жиры" />
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding DayCarbohydrates}">
+                    <DataGridTextColumn.Header>
+                        <TextBlock Text="Углеводы" />
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.Header>
+                        <TextBlock Text="Удаление" />
+                    </DataGridTemplateColumn.Header>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Command="{Binding ElementName=page, Path=DataContext.RemoveRowCommand}">
+                                <Button.Content>
+                                    <iconPacks:PackIconRadixIcons Kind="Cross2" />
+                                </Button.Content>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>-->
+        <Border
+            Grid.Row="2"
+            Grid.Column="1"
+            Margin="10,10,10,10"
+            Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
+            CornerRadius="10">
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <Button
+                    Width="{Binding ActualWidth, ElementName=page, Mode=OneWay, Converter={StaticResource MyWHConverter}, ConverterParameter=12}"
+                    Margin="1,0,1,0"
+                    Background="Transparent"
+                    Foreground = "#FF9F0055"
+                    BorderBrush="Transparent"
+                    Command="{Binding RemoveDayCommand}"
+                    Content="❮"
+                    FontSize="{Binding ActualHeight, ElementName=page, Mode=OneWay, Converter={StaticResource FontConverter}, ConverterParameter=25}" />
+                <DatePicker
+                    x:Name="DateTBResults"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Foreground = "#FF9F0055"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontFamily="Samsung Sharp Sans"
+                    FontSize="{Binding ActualHeight, ElementName=page, Mode=OneWay, Converter={StaticResource FontConverter}, ConverterParameter=29}"
+                    FontWeight="Normal"
+                    SelectedDate="{Binding DateToChoose, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <Button
+                    Width="{Binding ActualWidth, ElementName=page, Mode=OneWay, Converter={StaticResource MyWHConverter}, ConverterParameter=12}"
+                    Margin="1,0,0,0"
+                    Foreground = "#FF9F0055"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Command="{Binding AddDayCommand}"
+                    Content="❯"
+                    FontSize="{Binding ActualHeight, ElementName=page, Mode=OneWay, Converter={StaticResource FontConverter}, ConverterParameter=25}" />
+                <Button
+                    Width="{Binding ActualWidth, ConverterParameter=9, Converter={StaticResource MyWHConverter}, ElementName=page, Mode=OneWay}"
+                    Command="{Binding OpenChangeProductWindowCommand}"
+                    Content="Изменить"
+                    FontSize="{Binding ActualHeight, ConverterParameter=45, Converter={StaticResource FontConverter}, ElementName=page, Mode=OneWay}"
+                    Style="{StaticResource MahApps.Styles.Button}" />
+
+            </StackPanel>
+        </Border>
+
+
+    </Grid>
+
+</UserControl>
